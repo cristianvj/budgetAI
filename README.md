@@ -1,6 +1,7 @@
 # 💰 Budget AI
 
-## This is a cutting-edge finance app powered by AI to help you manage your budget, track expenses, and achieve your financial goals effortlessly.
+### This is a cutting-edge finance app powered by AI to help you manage your budget, track expenses, and achieve your financial goals effortlessly.
+
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
