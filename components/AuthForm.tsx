@@ -1,19 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+
+import { FcGoogle } from 'react-icons/fc';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+
+import CustomInput from './CustomInput';
+
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { authFormSchema } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/ui/icons';
-import { FcGoogle } from 'react-icons/fc';
-import Link from 'next/link';
-import CustomInput from './CustomInput';
-import { authFormSchema } from '@/lib/utils';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function AuthForm({type}: Readonly<{type: string}>) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -54,29 +55,24 @@ export default function AuthForm({type}: Readonly<{type: string}>) {
               {type === 'sign-up' && (
                   <>
                     <div className="flex gap-4">
-                      <CustomInput control={form.control} name='firstName' label="First Name" placeholder='Enter your first name' />
-                      <CustomInput control={form.control} name='lastName' label="Last Name" placeholder='Enter your first name' />
+                      <CustomInput control={form.control} name='firstName' label="Nombres" placeholder='Ingresa tu nombre' />
+                      <CustomInput control={form.control} name='lastName' label="Apellidos" placeholder='Ingresa tu apellido' />
                     </div>
-                    <CustomInput control={form.control} name='address1' label="Address" placeholder='Enter your specific address' />
-                    <CustomInput control={form.control} name='city' label="City" placeholder='Enter your city' />
+                    <CustomInput control={form.control} name='address1' label="Dirección" placeholder='Ingresa una dirección específica' />
+                    <CustomInput control={form.control} name='city' label="Ciudad" placeholder='Ingresa tu ciodad' />
                     <div className="flex gap-4">
-                      <CustomInput control={form.control} name='state' label="State" placeholder='Example: NY' />
-                      <CustomInput control={form.control} name='postalCode' label="Postal Code" placeholder='Example: 11101' />
+                      <CustomInput control={form.control} name='state' label="Estado o Departamento" placeholder='Ejemplo: NY' />
+                      <CustomInput control={form.control} name='postalCode' label="Código postal" placeholder='Ejemplo: 11101' />
                     </div>
                     <div className="flex gap-4">
-                      <CustomInput control={form.control} name='dateOfBirth' label="Date of Birth" placeholder='YYYY-MM-DD' />
-                      <CustomInput control={form.control} name='ssn' label="SSN" placeholder='Example: 1234' />
+                      <CustomInput control={form.control} name='dateOfBirth' label="Fecha de nacimiento" placeholder='YYYY-MM-DD' />
+                      <CustomInput control={form.control} name='ssn' label="Documento o ID" placeholder='Ejemplo: 1234' />
                     </div>
                   </>
                 )}
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" placeholder="m@example.com" required type="email" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password">Contraseña</Label>
-                  <Input id="password" required type="password" />
-                </div>
+                <CustomInput control={form.control} name='email' label="Email" placeholder='Enter your email' />
+                <CustomInput control={form.control} name='password' label="Password" placeholder='Enter your password' />
+
                 <Button className="w-full" type="submit">
                   {isLoading && (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
