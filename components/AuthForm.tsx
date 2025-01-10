@@ -19,10 +19,9 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Icons } from '@/components/ui/icons';
 
-export default function AuthForm({type}: Readonly<{type: string}>) {
+const AuthForm = ({type}: Readonly<{type: string}>) => {
   const router = useRouter();
 
-  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const formSchema = authFormSchema(type);
@@ -53,15 +52,16 @@ export default function AuthForm({type}: Readonly<{type: string}>) {
           password: data.password
         };
         const newUser = await signUp(userData);
-        if (newUser) router.push('/dashboard');
-      };
+        if (newUser)
+          router.push('/dashboard');
+      }
 
       if(type === 'sign-in') {
-        /* const response = await signIn({
+        const response = await signIn({
           email: data.email,
           password: data.password,
         });
-        if(response) router.push('/'); */
+        if(response) router.push('/dashboard');
       }
     } catch (error) {
       console.log(error);
@@ -139,4 +139,6 @@ export default function AuthForm({type}: Readonly<{type: string}>) {
       </div>
     </div>
   );
-}
+};
+
+export default AuthForm;

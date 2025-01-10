@@ -5,15 +5,31 @@ import { cookies } from 'next/headers';
 import { ID } from 'node-appwrite';
 import { parseStringify } from '../utils';
 
-const {
+/* const {
   APPWRITE_DATABASE_ID: DATABASE_ID,
   APPWRITE_USER_COLLECTION_ID: USER_COLLECTION_ID,
   APPWRITE_BANK_COLLECTION_ID: BANK_COLLECTION_ID,
-} = process.env;
+} = process.env; */
 
 
-export const signIn = async () => {
-  console.log('signIn');
+export const signIn = async ({email, password}: SignInProps) => {
+ try {
+    const { account } = await createAdminClient();
+    const user = await account.createEmailPasswordSession(email, password);
+
+    const cookieStore = await cookies();
+    cookieStore.set('appwrite-session', user.secret, {
+      path: '/',
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: true,
+    });
+
+    return parseStringify(user);
+  } catch (error) {
+    console.log('error: ', error);
+    return null;
+  }
 };
 
 export const signUp = async ({password, ...userData}: SignUpParams) => {
@@ -46,9 +62,22 @@ export const signUp = async ({password, ...userData}: SignUpParams) => {
 export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
-    return await account.get();
+    const user = await account.get();
+    return parseStringify(user);
   } catch (error) {
     console.log('error: ', error);
     return null;
+  }
+}
+
+export async function signOut() {
+  try {
+    const { account } = await createSessionClient();
+    const cookieStore = await cookies();
+    cookieStore.delete('appwrite-session');
+    await account.deleteSession('current');
+    return true;
+  } catch (error) {
+    console.log('error: ', error);
   }
 }

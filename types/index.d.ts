@@ -10,3 +10,8 @@ declare type SignUpParams = {
   email: string;
   password: string;
 };
+
+declare interface SignInProps {
+  email: string;
+  password: string;
+};
