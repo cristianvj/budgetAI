@@ -1,6 +1,11 @@
+import { redirect } from 'next/navigation';
+import { getLoggedInUser } from '@/lib/actions/user.actions';
 import Image from 'next/image';
 
-const RootLayout = ({children}: Readonly<{children: React.ReactNode}>) => {
+const RootLayout = async ({children}: Readonly<{children: React.ReactNode}>) => {
+  const loggedIn = await getLoggedInUser();
+  if(loggedIn) return redirect('/dashboard');
+
   return (
     <main className='flex h-screen flex-col lg:flex-row'>
       {/* Image Section */}

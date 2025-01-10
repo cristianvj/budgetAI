@@ -1,20 +1,14 @@
-'use client';
+import MainContainer from '@/components/dashboard/MainContainer';
+import { getLoggedInUser } from '@/lib/actions/user.actions';
+import { redirect } from 'next/navigation';
 
-import { signOut } from '@/lib/actions/user.actions';
-import { useRouter } from 'next/navigation';
-
-const Page = () => {
-  const router = useRouter();
-
-  const handleSignOut = async () => {
-    await signOut();
-    router.push('/sign-in');
-  };
+const Page = async () => {
+  const loggedIn = await getLoggedInUser();
+  if (!loggedIn) return redirect('/sign-in');
 
   return (
     <div>
-      <h1>Dashboard</h1>
-      <button onClick={handleSignOut}>Sign out</button>
+      <MainContainer />
     </div>
   );
 };

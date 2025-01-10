@@ -11,7 +11,7 @@ import { z } from 'zod';
 
 import { signIn, signUp } from '@/lib/actions/user.actions';
 
-import CustomInput from './CustomInput';
+import CustomInput from '../common/CustomInput';
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { authFormSchema } from '@/lib/utils';
