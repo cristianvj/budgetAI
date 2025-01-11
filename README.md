@@ -25,6 +25,18 @@ pnpm dev
 bun dev
 ```
 
+## Environment Variables
+
+Create a `.env` file in the root directory of the project and add the following environment variables:
+
+```bash
+NEXT_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
+NEXT_PUBLIC_APPWRITE_PROJECT=
+NEXT_PUBLIC_APPWRITE_KEY=
+```
+The complete list of environment variables can be found in the `env.example` file.
+
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
