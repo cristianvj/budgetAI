@@ -1,15 +1,11 @@
 'use client';
 
-import { ChevronRight, type LucideIcon } from 'lucide-react';
-
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
+  ChevronRight,
+  type LucideIcon,
+} from 'lucide-react';
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -17,35 +13,38 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
+import { Collapsible } from '@radix-ui/react-collapsible';
+import { CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 
-const NavMain: React.FC<({
+export function NavMain({
+  items,
+}: {
   items: {
-    title: string;
+    name: string;
     url: string;
-    icon?: LucideIcon;
+    icon: LucideIcon;
     isActive?: boolean;
     items?: {
       title: string;
       url: string;
     }[];
-  }[]
-})> = ({ items }) => {
+  }[];
+}) {
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+    <SidebarGroup className='group-data-[collapsible=icon]:hidden'>
       <SidebarMenu>
-        {items.map((item) => (
+        {items.map((item) => item.items ?(
           <Collapsible
-            key={item.title}
+            key={item.name}
             asChild
             defaultOpen={item.isActive}
             className='group/collapsible'
           >
-            <SidebarMenuItem>
+            <SidebarMenuItem key={item.name}>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
+                <SidebarMenuButton tooltip={item.name}>
+                  {item.icon && <item.icon className='text-primary' />}
+                  <span>{item.name}</span>
                   <ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
@@ -64,10 +63,17 @@ const NavMain: React.FC<({
               </CollapsibleContent>
             </SidebarMenuItem>
           </Collapsible>
+        ) : (
+          <SidebarMenuItem key={item.name}>
+            <SidebarMenuButton asChild>
+              <a href={item.url}>
+                <item.icon className='text-primary' />
+                <span>{item.name}</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
         ))}
       </SidebarMenu>
     </SidebarGroup>
   );
-};
-
-export default NavMain;
+}
