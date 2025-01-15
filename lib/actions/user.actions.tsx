@@ -28,7 +28,7 @@ export const signIn = async ({email, password}: SignInProps) => {
     return parseStringify(user);
   } catch (error) {
     console.log('error: ', error);
-    return null;
+    throw error;
   }
 };
 
@@ -56,6 +56,7 @@ export const signUp = async ({password, ...userData}: SignUpParams) => {
     return parseStringify(newUserAccount);
   } catch (error) {
     console.log('error: ', error);
+    throw error;
   }
 };
 

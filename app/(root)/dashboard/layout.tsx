@@ -14,8 +14,13 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
+import { redirect } from 'next/navigation';
+import { getLoggedInUser } from '@/lib/actions/user.actions';
 
-export default function Page({children}: {children: React.ReactNode}) {
+export default async function Page({children}: {children: React.ReactNode}) {
+  const loggedIn = await getLoggedInUser();
+  if(!loggedIn) return redirect('/sign-in');
+
   return (
     <SidebarProvider>
       <AppSidebar />

@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
 import Image from 'next/image';
+import { Toaster } from '@/components/ui/toaster';
 
 const RootLayout = async ({children}: Readonly<{children: React.ReactNode}>) => {
   const loggedIn = await getLoggedInUser();
@@ -28,6 +29,9 @@ const RootLayout = async ({children}: Readonly<{children: React.ReactNode}>) => 
       <div className="flex flex-1 items-center justify-center">
         {children}
       </div>
+
+      {/* Toaster Section */}
+      <Toaster />
     </main>
   );
 };
