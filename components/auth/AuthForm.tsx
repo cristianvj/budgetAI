@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-import { FcGoogle } from 'react-icons/fc';
+// import { FcGoogle } from 'react-icons/fc';
 import { useForm } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
 
@@ -114,7 +114,8 @@ const AuthForm = ({type}: Readonly<{type: string}>) => {
                     )}
                     {type === 'sign-in' ? 'Inicia Sesión' : 'Registrarse'}
                   </Button>
-                  <div className='relative'>
+                  {/* TODO: Add social login */}
+                  {/* <div className='relative'>
                     <div className='absolute inset-0 flex items-center'>
                       <span className='w-full border-t' />
                     </div>
@@ -127,7 +128,7 @@ const AuthForm = ({type}: Readonly<{type: string}>) => {
                   <Button variant='outline' type='button' className='w-full'>
                     <FcGoogle className='mr-2 h-4 w-4' />
                     {type === 'sign-in' ? 'Inicia sesión con Google' : 'Regístrate con Google'  }
-                  </Button>
+                  </Button> */}
                 </div>
               </form>
             </Form>

@@ -30,7 +30,6 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { signOut } from '@/lib/actions/user.actions';
-import { redirect } from 'next/navigation';
 
 const NavUser: React.FC<({
   user: {
@@ -43,7 +42,6 @@ const NavUser: React.FC<({
 
   const handleSignOut = async () => {
     await signOut();
-    redirect('/sign-in');
   };
 
   return (

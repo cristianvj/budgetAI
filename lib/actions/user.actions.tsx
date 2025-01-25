@@ -1,8 +1,11 @@
 'use server';
 
-import { createAdminClient, createSessionClient } from '../appwrite';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+
 import { ID } from 'node-appwrite';
+import { createAdminClient, createSessionClient } from '../appwrite';
+
 import { parseStringify } from '../utils';
 
 /* const {
@@ -72,13 +75,10 @@ export async function getLoggedInUser() {
 }
 
 export async function signOut() {
-  try {
-    const { account } = await createSessionClient();
-    const cookieStore = await cookies();
-    cookieStore.delete('appwrite-session');
-    await account.deleteSession('current');
-    return true;
-  } catch (error) {
-    console.log('error: ', error);
-  }
+  const { account } = await createSessionClient();
+
+  (await cookies()).delete('my-custom-session');
+  await account.deleteSession('current');
+
+  redirect('/sign-in');
 }

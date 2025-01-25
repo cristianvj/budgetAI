@@ -1,7 +1,8 @@
-import { redirect } from 'next/navigation';
-import { getLoggedInUser } from '@/lib/actions/user.actions';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
+
 import { Toaster } from '@/components/ui/toaster';
+import { getLoggedInUser } from '@/lib/actions/user.actions';
 
 const RootLayout = async ({children}: Readonly<{children: React.ReactNode}>) => {
   const loggedIn = await getLoggedInUser();
