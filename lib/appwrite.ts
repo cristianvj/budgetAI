@@ -8,8 +8,7 @@ export async function createSessionClient() {
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
 
-  const sessionCookies = await cookies();
-  const session = sessionCookies.get('appwrite-session');
+  const session = (await cookies()).get('appwrite-session');
   if (!session?.value) {
     throw new Error('No session');
   }
@@ -23,11 +22,13 @@ export async function createSessionClient() {
   };
 }
 
-export async function createAdminClient() {
+export async function createAdminClient(userAgent?: string | null) {
   const client = new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)
     .setKey(process.env.NEXT_APPWRITE_KEY!);
+
+    if (userAgent) client.setForwardedUserAgent(userAgent);
 
   return {
     get account() {

@@ -4,14 +4,14 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-// import { FcGoogle } from 'react-icons/fc';
+import { FcGoogle } from 'react-icons/fc';
 import { useForm } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { signIn, signUp } from '@/lib/actions/user.actions';
+import { signIn, signUp, signUpWithGoogle } from '@/lib/actions/user.actions';
 
 import CustomInput from '../common/CustomInput';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -75,6 +75,23 @@ const AuthForm = ({type}: Readonly<{type: string}>) => {
     }
   };
 
+  const handleSignUpWithGoogle = async () => {
+    setIsLoading(true);
+    try {
+      const response = await signUpWithGoogle();
+      if(response) router.push('/dashboard');
+    } catch (error) {
+      console.log(error);
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Algo salió mal.',
+        description: 'No se pudo iniciar sesión con Google.',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <div className='flex flex-col w-full items-center h-full overflow-hidden'>
       <div className='overflow-y-auto h-full w-full p-6 lg:p-12 flex justify-center flex-col items-center'>
@@ -114,8 +131,7 @@ const AuthForm = ({type}: Readonly<{type: string}>) => {
                     )}
                     {type === 'sign-in' ? 'Inicia Sesión' : 'Registrarse'}
                   </Button>
-                  {/* TODO: Add social login */}
-                  {/* <div className='relative'>
+                  <div className='relative'>
                     <div className='absolute inset-0 flex items-center'>
                       <span className='w-full border-t' />
                     </div>
@@ -125,10 +141,10 @@ const AuthForm = ({type}: Readonly<{type: string}>) => {
                       </span>
                     </div>
                   </div>
-                  <Button variant='outline' type='button' className='w-full'>
+                  <Button variant='outline' type='button' className='w-full' onClick={handleSignUpWithGoogle}>
                     <FcGoogle className='mr-2 h-4 w-4' />
                     {type === 'sign-in' ? 'Inicia sesión con Google' : 'Regístrate con Google'  }
-                  </Button> */}
+                  </Button>
                 </div>
               </form>
             </Form>

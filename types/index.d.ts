@@ -15,3 +15,7 @@ declare interface SignInProps {
   email: string;
   password: string;
 };
+
+declare interface getUserInfoProps {
+  userId: string;
+}
