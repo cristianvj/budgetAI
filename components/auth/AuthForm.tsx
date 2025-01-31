@@ -43,7 +43,7 @@ const AuthForm = ({type}: Readonly<{type: string}>) => {
         const userData = {
           firstName: data.firstName!,
           lastName: data.lastName!,
-          address1: data.address1!,
+          address: data.address!,
           city: data.city!,
           state: data.state!,
           postalCode: data.postalCode!,
@@ -78,8 +78,7 @@ const AuthForm = ({type}: Readonly<{type: string}>) => {
   const handleSignUpWithGoogle = async () => {
     setIsLoading(true);
     try {
-      const response = await signUpWithGoogle();
-      if(response) router.push('/dashboard');
+      await signUpWithGoogle();
     } catch (error) {
       console.log(error);
       toast({
@@ -90,7 +89,7 @@ const AuthForm = ({type}: Readonly<{type: string}>) => {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className='flex flex-col w-full items-center h-full overflow-hidden'>
@@ -110,7 +109,7 @@ const AuthForm = ({type}: Readonly<{type: string}>) => {
                         <CustomInput control={form.control} name='firstName' label='Nombres' placeholder='Ingresa tu nombre' />
                         <CustomInput control={form.control} name='lastName' label='Apellidos' placeholder='Ingresa tu apellido' />
                       </div>
-                      <CustomInput control={form.control} name='address1' label='Dirección' placeholder='Ingresa una dirección específica' />
+                      <CustomInput control={form.control} name='address' label='Dirección' placeholder='Ingresa una dirección específica' />
                       <CustomInput control={form.control} name='city' label='Ciudad' placeholder='Ingresa tu ciodad' />
                       <div className='flex gap-4'>
                         <CustomInput control={form.control} name='state' label='Estado o Departamento' placeholder='Ejemplo: NY' />
@@ -141,7 +140,7 @@ const AuthForm = ({type}: Readonly<{type: string}>) => {
                       </span>
                     </div>
                   </div>
-                  <Button variant='outline' type='button' className='w-full' onClick={handleSignUpWithGoogle}>
+                  <Button disabled={isLoading} variant='outline' type='button' className='w-full' onClick={handleSignUpWithGoogle}>
                     <FcGoogle className='mr-2 h-4 w-4' />
                     {type === 'sign-in' ? 'Inicia sesión con Google' : 'Regístrate con Google'  }
                   </Button>

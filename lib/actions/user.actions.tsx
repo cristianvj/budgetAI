@@ -13,6 +13,21 @@ const {
   APPWRITE_USER_COLLECTION_ID: USER_COLLECTION_ID,
 } = process.env;
 
+export const getUserInfo = async ({ userId }: getUserInfoProps) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const user = await database.listDocuments(
+      DATABASE_ID!,
+      USER_COLLECTION_ID!,
+      [Query.equal('userId', [userId])]
+    );
+
+    return parseStringify(user.documents[0]);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const signIn = async ({email, password}: SignInProps) => {
  try {
@@ -36,45 +51,43 @@ export const signIn = async ({email, password}: SignInProps) => {
 
 export const signUp = async ({password, ...userData}: SignUpParams) => {
   const { email, firstName, lastName } = userData;
+
+  let newUserAccount;
+
   try {
-    const { account } = await createAdminClient();
-    const newUserAccount = await account.create(
+    const { account, database } = await createAdminClient();
+
+    newUserAccount = await account.create(
       ID.unique(),
       email,
       password,
       `${firstName} ${lastName}`,
     );
 
+    if(!newUserAccount) throw new Error('Error creating user');
+
+    const newUser = await database.createDocument(
+      DATABASE_ID!,
+      USER_COLLECTION_ID!,
+      ID.unique(),
+      {
+        ...userData,
+        userId: newUserAccount.$id,
+      }
+    );
+
     const session = await account.createEmailPasswordSession(email, password);
 
-    const cookieStore = await cookies();
-    cookieStore.set('appwrite-session', session.secret, {
+    (await cookies()).set('appwrite-session', session.secret, {
       path: '/',
       httpOnly: true,
       sameSite: 'strict',
       secure: true,
     });
 
-    return parseStringify(newUserAccount);
+    return parseStringify(newUser);
   } catch (error) {
     console.log('error: ', error);
-    throw error;
-  }
-};
-
-export const getUserInfo = async ({ userId }: getUserInfoProps) => {
-  try {
-    const { database } = await createAdminClient();
-
-    const user = await database.listDocuments(
-      DATABASE_ID!,
-      USER_COLLECTION_ID!,
-      [Query.equal('userId', [userId])]
-    );
-
-    return parseStringify(user.documents[0]);
-  } catch (error) {
-    console.log(error);
   }
 };
 
@@ -111,13 +124,15 @@ export async function signOut() {
 }
 
 export async function signUpWithGoogle() {
-  const userAgent = (await headers()).get('user-agent')!;
-  const { account } = await createAdminClient(userAgent);
+  const { account } = await createAdminClient();
 
   const origin = (await headers()).get('origin');
-  console.log('headers: ', origin);
   
-	const redirectUrl = await account.createOAuth2Token(OAuthProvider.Google, `${origin}/api/oauth`, `${origin}/sign-up`);
+	const redirectUrl = await account.createOAuth2Token(
+    OAuthProvider.Google,
+    `${origin}/api/oauth`,
+    `${origin}/sign-in`
+  );
 
 	redirect(redirectUrl);
 }

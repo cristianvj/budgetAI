@@ -1,7 +1,7 @@
 declare type SignUpParams = {
   firstName?: string;
   lastName?: string;
-  address1?: string;
+  address?: string;
   city?: string;
   state?: string;
   postalCode?: string;
@@ -19,3 +19,20 @@ declare interface SignInProps {
 declare interface getUserInfoProps {
   userId: string;
 }
+
+declare type User = {
+  $id: string;
+  email: string;
+  userId: string;
+  dwollaCustomerUrl: string;
+  dwollaCustomerId: string;
+  firstName: string;
+  lastName: string;
+  name: string;
+  address1: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  dateOfBirth: string;
+  ssn: string;
+};

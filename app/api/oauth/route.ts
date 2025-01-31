@@ -17,5 +17,5 @@ export async function GET(request: NextRequest) {
     secure: true,
   });
 
-  return NextResponse.redirect(`${request.nextUrl.origin}/sign-in/`);
+  return NextResponse.redirect(`${request.nextUrl.origin}/sign-in`);
 }

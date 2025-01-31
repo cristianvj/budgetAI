@@ -25,7 +25,7 @@ export const authFormSchema = (type: string) => z.object({
       })
       .min(3, 'El apellido debe tener al menos 3 caracteres')
       .max(200, 'El apellido debe tener máximo 200 caracteres'),
-  address1: type === 'sign-in' 
+  address: type === 'sign-in' 
     ? z.string().optional() 
     : z.string({
         required_error: 'La dirección es requerida'
